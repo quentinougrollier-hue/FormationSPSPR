@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Formations Sapeurs-Pompiers - SPSPR</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">SPSPR - Formations</h1>
+      <nav>
+        <a href="#formations">Formations</a>
+        <a href="#a-propos">À propos</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h2>Formations pour sapeurs-pompiers</h2>
+        <p>Inscris-toi aux sessions, consulte le programme et reçois ton attestation.</p>
+        <a class="btn" href="#formations">Voir les formations</a>
+      </div>
+    </section>
+
+    <section id="formations" class="container section">
+      <h3>Nos formations</h3>
+      <div id="courses" class="courses-grid">
+        <!-- Les cartes de formation sont injectées par js/app.js -->
+      </div>
+    </section>
+
+    <section id="a-propos" class="container section">
+      <h3>À propos</h3>
+      <p>Ce site permet la gestion simple des sessions de formation : fiches, inscriptions et contact. Personnalise-le selon tes besoins (ajout de paiement, authentification, export CSV, etc.).</p>
+    </section>
+
+    <section id="contact" class="container section">
+      <h3>Contact</h3>
+      <form id="contactForm" action="https://formspree.io/f/your-form-id" method="POST">
+        <label>
+          Nom complet
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Message
+          <textarea name="message" rows="4"></textarea>
+        </label>
+        <button class="btn" type="submit">Envoyer</button>
+        <p class="hint">Remplace l'URL Formspree par ton endpoint (guide dans README).</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> SPSPR — Tous droits réservés</small>
+    </div>
+  </footer>
+
+  <!-- Modal d'inscription -->
+  <div id="registerModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close" aria-label="Fermer">&times;</button>
+      <h4 id="modalTitle">Inscription</h4>
+      <form id="registerForm">
+        <input type="hidden" name="courseId" id="courseId" />
+        <label>
+          Nom complet
+          <input type="text" name="name" id="r-name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" id="r-email" required />
+        </label>
+        <label>
+          Téléphone
+          <input type="tel" name="phone" id="r-phone" />
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn">S'inscrire</button>
+        </div>
+      </form>
+      <p id="registerMsg" class="hint"></p>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
