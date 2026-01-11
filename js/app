@@ -1,0 +1,84 @@
+// Chargement des cours et gestion du formulaire d'inscription (statique)
+// Remplace l'URL Formspree dans index.html par ton endpoint si tu veux envoyer les inscriptions par email.
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('year').textContent = new Date().getFullYear();
+  fetch('data/courses.json')
+    .then(r => r.json())
+    .then(renderCourses)
+    .catch(err => {
+      console.error('Erreur chargement cours', err);
+      document.getElementById('courses').innerHTML = '<p class="hint">Impossible de charger les formations.</p>';
+    });
+
+  // Modal handling
+  const modal = document.getElementById('registerModal');
+  const closeModal = document.getElementById('closeModal');
+  closeModal.addEventListener('click', () => closeRegisterModal());
+  modal.addEventListener('click', e => { if(e.target === modal) closeRegisterModal(); });
+
+  document.getElementById('registerForm').addEventListener('submit', handleRegister);
+});
+
+function renderCourses(courses){
+  const container = document.getElementById('courses');
+  container.innerHTML = '';
+  courses.forEach(c => {
+    const card = document.createElement('article');
+    card.className = 'course-card';
+    card.innerHTML = `
+      <h4>${escapeHtml(c.title)}</h4>
+      <div class="course-meta">${escapeHtml(c.duration)} • ${escapeHtml(c.level)}</div>
+      <p>${escapeHtml(c.description)}</p>
+      <div class="course-actions">
+        <button class="btn" data-id="${c.id}" onclick="openRegister('${c.id}')">S'inscrire</button>
+        <button class="btn" onclick="alert('Programme:\\n${escapeHtml(c.program || 'À définir')}')">Programme</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Escape basique
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];}); }
+
+window.openRegister = function(courseId){
+  const modal = document.getElementById('registerModal');
+  document.getElementById('courseId').value = courseId;
+  const courses = window._coursesCache || [];
+  const c = (courses.find(x => x.id === courseId) || {});
+  document.getElementById('modalTitle').textContent = `Inscription — ${c.title || ''}`;
+  modal.setAttribute('aria-hidden','false');
+};
+
+function closeRegisterModal(){
+  const modal = document.getElementById('registerModal');
+  modal.setAttribute('aria-hidden','true');
+  document.getElementById('registerMsg').textContent = '';
+  document.getElementById('registerForm').reset();
+}
+
+function handleRegister(e){
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    courseId: form.courseId.value,
+    name: form['name'].value,
+    email: form['email'].value,
+    phone: form['phone'].value,
+    createdAt: new Date().toISOString()
+  };
+
+  // Stocker dans localStorage (exemple). Pour production, envoie vers un serveur ou Formspree.
+  const key = 'spspr_registrations';
+  const regs = JSON.parse(localStorage.getItem(key) || '[]');
+  regs.push(data);
+  localStorage.setItem(key, JSON.stringify(regs));
+
+  // Optionnel : envoyer à Formspree / endpoint API
+  // fetch('https://formspree.io/f/your-form-id', {method:'POST', body: new URLSearchParams(data)})
+  //   .then(()=>{/* success */}).catch(()=>{/* ignore */});
+
+  document.getElementById('registerMsg').textContent = "Inscription enregistrée (stockée localement). Tu peux ajouter l'envoi côté serveur ou Formspree.";
+  setTimeout(closeRegisterModal, 1200);
+}
