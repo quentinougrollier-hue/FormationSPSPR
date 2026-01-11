@@ -1,0 +1,26 @@
+[
+  {
+    "id": "f1",
+    "title": "Formation de base PSC1",
+    "duration": "1 jour",
+    "level": "Débutant",
+    "description": "Premiers secours civiques, gestes d'urgence, oxygénothérapie de base.",
+    "program": "Matin: théorie; Après-midi: ateliers pratiques"
+  },
+  {
+    "id": "f2",
+    "title": "Intervention feux de végétation",
+    "duration": "2 jours",
+    "level": "Intermédiaire",
+    "description": "Techniques d'attaque, sécurité, utilisation d'outils et d'extincteurs.",
+    "program": "Jour 1: notions; Jour 2: mise en pratique sur site"
+  },
+  {
+    "id": "f3",
+    "title": "Manœuvres d'échelle et sauvetage",
+    "duration": "2 jours",
+    "level": "Avancé",
+    "description": "Sécurité en hauteur, techniques de sauvetage, cordage.",
+    "program": "Session pratique intensive"
+  }
+]
